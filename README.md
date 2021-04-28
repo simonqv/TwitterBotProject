@@ -1,4 +1,4 @@
 # Project
-INDA Project
+INDA projekt
 
-Hej :)
+Ett program/bot som tweetar alla politikers tweets fast på rövarspråket.
