@@ -1,4 +1,4 @@
-public class testtest {
+public class test2 {
     public static void main(String[] args) {
         System.out.println("tjo test i sofias branch");
     }
