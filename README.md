@@ -7,5 +7,5 @@ Ett program/bot som tweetar alla politikers tweets fast på rövarspråket. Och 
 |------------------|----------------|
 |**Användarnman:** |bandolero       |
 |                  |@bandole19183971|
-|**Lösenord:**     |piglatin        |
+|**Lösenord:**     |Fråga Simon eller Sofia|
 |**Mejladress:**   | sofierik@kth.se|
