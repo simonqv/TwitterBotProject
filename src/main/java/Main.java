@@ -15,6 +15,7 @@ public class Main {
     public static void main(String[] args) throws TwitterException {
         Tweeter t = new Tweeter();
         //System.out.println(t.postTweet("totesostot"));
+        // Har lite problem med git...
         TweetReader tr = new TweetReader();
         List<Status> l = tr.getTimeLine();
         for (var s : l) {
