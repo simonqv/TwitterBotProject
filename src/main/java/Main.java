@@ -25,8 +25,8 @@ public class Main {
         //    System.out.println(s.getUser().getName() + " " + s.getText());
         //}
         //var s = new Translator().toRovarspraket("Hej jag är hungrig!");
-        var s = new Translator().toPiglatin("Please, shut your mouth and hide your teeth!");
-        System.out.println(s);
-        System.out.println("Should be: Easeplay, utshay yourway outhmay andway idehay yourway eethtay!");
+        //var s = new Translator().toPiglatin("Please, shut your mouth and hide your teeth!");
+        //System.out.println(s);
+        //System.out.println("Easeplay, utshay yourway outhmay andway idehay yourway eethtay!");
     }
 }
