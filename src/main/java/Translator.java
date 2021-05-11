@@ -10,39 +10,30 @@ import java.util.stream.Collectors;
  * Pig Latin
  */
 public class Translator {
-    private List<Status> statusList;
-    private Status status;
-    private String translatedTweet;
+    private final List<Status> status;
 
-    public Translator(List<Status> statusList) {
-        this.statusList = statusList;
-    }
-
-    public Translator(Status status, String translatedTweet) {
+    public Translator(List<Status> status) {
         this.status = status;
-        this.translatedTweet = translatedTweet;
-
     }
 
-    public List<String> translate(List<Status> status) throws Exception {
-        List<String> translatedTweet = new ArrayList<>();
 
+    public List<TranslatedStatus> translate() throws Exception {
+        List<TranslatedStatus> statusList = new ArrayList<>();
         for (var s : status) {
             try {
                 String lang = s.getLang();
                 int len = s.getText().length();
                 switch (lang) {
                     case "en":
-                        translatedTweet.add(toPiglatin(s.getText()));
-                        new Translator(s, toPiglatin( s.getText()));
+                        statusList.add(new TranslatedStatus(s, toPiglatin(s.getText())));
 
                         break;
                     case "sv":
-                        translatedTweet.add(toRovarspraket(s.getText()));
+                        statusList.add(new TranslatedStatus(s, toRovarspraket(s.getText())));
 
                         break;
                     case "da":
-                        translatedTweet.add("Danska är ändå nästan svenska " + toRovarspraket(s.getText()));
+                        statusList.add(new TranslatedStatus(s, toRovarspraket("Danska är ändå nästan svenska " + s.getText())));
 
                         break;
                     default:
@@ -53,7 +44,7 @@ public class Translator {
             }
 
         }
-        return translatedTweet;
+        return statusList;
     }
 
     /**
@@ -90,32 +81,32 @@ public class Translator {
         List<String> list = Arrays.asList(tweet.split("\\b"));
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < list.size(); i++) {
-                // Word starts with vowel
-            if (list.get(i).matches("^[aieouyAIEOUY].*")) {
-                sb.append(list.get(i) + "way");
+        for (String s : list) {
+            // Word starts with vowel
+            if (s.matches("^[aieouyAIEOUY].*")) {
+                sb.append(s).append("way");
 
                 // Word starts with consonant
-            } else if (list.get(i).matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM].*")) {
-                List<String> charList = Arrays.asList(list.get(i).split("(?!^)"));
+            } else if (s.matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM].*")) {
+                List<String> charList = Arrays.asList(s.split("(?!^)"));
                 int j = 0;
                 while (charList.get(j).matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM]")) {
                     j++;
                 }
                 if (charList.get(0).matches("[A-Z]")) {
-                    sb.append(charList.get(j).toUpperCase()
-                            + list.get(i).substring(j+1)
-                            + list.get(i).substring(0,j).toLowerCase()
-                            + "ay");
+                    sb.append(charList.get(j).toUpperCase())
+                            .append(s.substring(j + 1))
+                            .append(s.substring(0, j).toLowerCase())
+                            .append("ay");
                 } else {
-                    sb.append(list.get(i).substring(j)
-                            + list.get(i).substring(0,j)
-                            + "ay");
+                    sb.append(s.substring(j))
+                            .append(s.substring(0, j))
+                            .append("ay");
                 }
 
                 // Word is actually whitespace or punctuation
             } else {
-                sb.append(list.get(i));
+                sb.append(s);
             }
         }
         return sb.toString();
