@@ -13,17 +13,19 @@ import java.util.List;
 
 public class Main {
 
-    //test
-    // test 2
-
     public static void main(String[] args) throws TwitterException {
         Tweeter t = new Tweeter();
         //System.out.println(t.postTweet("totesostot"));
         TweetReader tr = new TweetReader();
         List<Status> l = tr.getTimeLine();
-        //for (var s : l) {
-        //    System.out.println(s.getUser().getName() + " " + s.getText());
-        //}
-        var s = new Translator().rovarspraket("Hej jag är hungrig!");
+
+        for (var s : l) {
+            System.out.println(s.getLang() + ": " + s.getText());
+            System.out.println(s.getUser().getName() + " " + s.getText());
+        }
+        //var s = new Translator().toRovarspraket("Hej jag är hungrig!");
+        //var s = new Translator().toPiglatin("Please, shut your mouth and hide your teeth!");
+        //System.out.println(s);
+        //System.out.println("Easeplay, utshay yourway outhmay andway idehay yourway eethtay!");
     }
 }
