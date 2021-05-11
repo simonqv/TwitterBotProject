@@ -1,3 +1,6 @@
+import twitter4j.Status;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,6 +10,51 @@ import java.util.stream.Collectors;
  * Pig Latin
  */
 public class Translator {
+    private List<Status> statusList;
+    private Status status;
+    private String translatedTweet;
+
+    public Translator(List<Status> statusList) {
+        this.statusList = statusList;
+    }
+
+    public Translator(Status status, String translatedTweet) {
+        this.status = status;
+        this.translatedTweet = translatedTweet;
+
+    }
+
+    public List<String> translate(List<Status> status) throws Exception {
+        List<String> translatedTweet = new ArrayList<>();
+
+        for (var s : status) {
+            try {
+                String lang = s.getLang();
+                int len = s.getText().length();
+                switch (lang) {
+                    case "en":
+                        translatedTweet.add(toPiglatin(s.getText()));
+                        new Translator(s, toPiglatin( s.getText()));
+
+                        break;
+                    case "sv":
+                        translatedTweet.add(toRovarspraket(s.getText()));
+
+                        break;
+                    case "da":
+                        translatedTweet.add("Danska är ändå nästan svenska " + toRovarspraket(s.getText()));
+
+                        break;
+                    default:
+                        throw new Exception();
+                }
+            } catch (Exception e) {
+                throw new Exception(e);
+            }
+
+        }
+        return translatedTweet;
+    }
 
     /**
      * Method to translate into rövarspråket.
@@ -23,28 +71,12 @@ public class Translator {
                 list.set(i, list.get(i) + "o" + list.get(i).toLowerCase());
             }
         }
-
         for (String string : list) {
             sb.append(string);
         }
+
         return sb.toString();
 
-        /*
-        //var newString = tweet.replaceAll("^[eyuioåaöäEYUIOÅÄÖA]$");
-
-        System.out.println(list);
-
-
-        List<String> rovar = list.stream().map(s -> {
-            if (!s.matches("^[eyuioåaöäEYUIOÅÄÖA]$") ) {
-                s.replace(s, s + "o" + s);
-                System.out.println(s);
-            }
-            return s;
-        }
-        ).collect(Collectors.toList());
-        System.out.println(list);
-        */
     }
 
     /**

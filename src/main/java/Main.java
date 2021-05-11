@@ -19,6 +19,12 @@ public class Main {
         TweetReader tr = new TweetReader();
         List<Status> l = tr.getTimeLine();
 
+        Translator translator = new Translator(l);
+
+        //var hej = translator.toRovarspraket();
+
+        //var s = new Translator().toPiglatin();
+
         for (var s : l) {
             System.out.println(s.getLang() + ": " + s.getText());
             System.out.println(s.getUser().getName() + " " + s.getText());
