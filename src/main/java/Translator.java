@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Rövarspråket
- * Pig Latin
+ * Translator class.
+ *
+ * @author Sofia Eriksson
+ * @author Simon Larspers Qvist
+ * @version 2021-05-11
  */
 public class Translator {
     private final List<Status> status;
@@ -15,7 +18,6 @@ public class Translator {
     public Translator(List<Status> status) {
         this.status = status;
     }
-
 
     public List<TranslatedStatus> translate() throws Exception {
         List<TranslatedStatus> statusList = new ArrayList<>();
@@ -88,20 +90,48 @@ public class Translator {
 
                 // Word starts with consonant
             } else if (s.matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM].*")) {
+                // Split word into characters
                 List<String> charList = Arrays.asList(s.split("(?!^)"));
+
+                // Count how many capital letters in the beginning of the word
                 int j = 0;
-                while (charList.get(j).matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM]")) {
+                while (j < charList.size() &&
+                        charList.get(j).matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM]")) {
                     j++;
                 }
-                if (charList.get(0).matches("[A-Z]")) {
+
+                // Both the first and last character are capital letters
+                // (most likely a word with only capital letters)
+                if (charList.get(0).matches("[A-Z]") &&
+                        charList.get(charList.size()-1).matches("[A-Z]")) {
                     sb.append(charList.get(j).toUpperCase())
                             .append(s.substring(j + 1))
-                            .append(s.substring(0, j).toLowerCase())
-                            .append("ay");
-                } else {
+                            .append(s.substring(0, j))
+                            .append("AY");
+
+                // Both the first and last character are not capital letters
+                // (most likely a word with no capital letters)
+                } else if (charList.get(0).matches("[a-z]") &&
+                        charList.get(charList.size()-1).matches("[a-z]")){
                     sb.append(s.substring(j))
                             .append(s.substring(0, j))
                             .append("ay");
+
+                // The first character is a capital letter
+                // (Most likely a word that starts with a capital letter, all others are lower case)
+                } else if (charList.get(0).matches("[A-Z]") &&
+                        charList.get(charList.size()-1).matches("[a-z]")){
+                    sb.append(charList.get(j).toUpperCase())
+                            .append(s.substring(j+1))
+                            .append(s.substring(0, j).toLowerCase())
+                            .append("ay");
+
+                    // The last character is a capital letter
+                    // (Most likely a very strange word)
+                } else {
+                    sb.append(s.substring(j).toLowerCase())
+                            .append(s.substring(0, j))
+                            .append("AY");
                 }
 
                 // Word is actually whitespace or punctuation

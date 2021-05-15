@@ -10,6 +10,7 @@ public class TweetReader {
     public TweetReader(){
         Twitter twitter = new TwitterFactory().getInstance();
     }
+
     public ResponseList<Status> getTimeLine() throws TwitterException {
         Twitter twitter = new TwitterFactory().getInstance();
 
