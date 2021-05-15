@@ -73,4 +73,19 @@ public class Tweeter {
         }
         return subTweetList;
     }
+
+    // Status first, Translated second
+    private StringBuilder parser(List<TranslatedStatus> ts) {
+        Status tweetInfo = ts.get(0).getStatus();
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(tweetInfo.getUser().toString());
+        if (tweetInfo.getLang().equals("en")) {
+            sb.append(" Eetedtway: ");
+        } else {
+            sb.append(" totwoweetotadode: ");
+        }
+
+        return sb.append(ts.get(1).getTranslatedTweet());
+    }
 }
