@@ -39,7 +39,7 @@ public class Translator {
 
                         break;
                     default:
-                        throw new Exception();
+                        //
                 }
             } catch (Exception e) {
                 throw new Exception(e);
