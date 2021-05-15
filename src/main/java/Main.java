@@ -1,5 +1,4 @@
 import twitter4j.Status;
-import twitter4j.TwitterException;
 
 import java.util.List;
 
@@ -15,12 +14,35 @@ public class Main {
 
     public static void main(String[] args) {
         try {
+<<<<<<< HEAD
              TweetReader tr = new TweetReader();
              List<Status> l = tr.getTimeLine();                     // get tweets
              Translator translator = new Translator(l);
              List<TranslatedStatus> ts = translator.translate();    // translate tweets
              Tweeter t = new Tweeter(translator);
              t.postTweet(ts);                                       // Post tweet
+=======
+            TweetReader tr = new TweetReader();
+            List<Status> l = tr.getTimeLine();                  // get tweets
+            Translator translator = new Translator(l);
+            List<TranslatedStatus> ts = translator.translate(); // translate tweets
+            Tweeter t = new Tweeter(translator);
+            // t.postTweet(ts);                      // Post tweet
+
+            String test = "PLATTA";
+            String test2 = "PLATTa";
+            String test3 = "platta";
+            String test4 = "Platta";
+            String test5 = "PlaTTa";
+            // System.out.println(test.length());
+            // System.out.println(test);
+            System.out.println(translator.toPiglatin(test));
+            System.out.println(translator.toPiglatin(test2));
+            System.out.println(translator.toPiglatin(test3));
+            System.out.println(translator.toPiglatin(test4));
+            System.out.println(translator.toPiglatin(test5));
+            //System.out.println(t.postTweet("totesostot"));
+>>>>>>> 40ec95c0d0b1f5ab8f9df883ab8044d880f34ed7
 
             //for (var s : l) {
             //    System.out.println(s.getLang() + ": " + s.getText());
