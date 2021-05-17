@@ -2,7 +2,7 @@
 This is a project for the INDA course - DD1349.  
 
 We will in this project implement a Twitter-bot that reads Swedish politicians tweets and then translates them  into 
-rövarspråket and piglating, depending if the tweet was in Swedish or English. 
+rövarspråket and piglatin, depending if the tweet was in Swedish or English. 
 
 Chosen programming language: Java.
 
