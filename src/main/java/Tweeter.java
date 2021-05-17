@@ -15,44 +15,10 @@ public class Tweeter {
 
     public void postTweet() throws TwitterException {
         Twitter twitter = new TwitterFactory().getInstance();
-<<<<<<< HEAD
-        StringBuilder sb = parser(ts);
-
-<<<<<<< HEAD
-        if (!ts.get(0).getStatus().getUser().toString().equals("bandole19183971")) {
-            if (sb.length() > 280) {
-                twitter.updateStatus(sb.toString());
-            } else {
-                List<String> subTweetList = tweetSplitter(sb);
-                long inReplyToStatusId = -1;
-                int counter = 0;
-=======
-        // Vad vill vi göra?
-        // steg 1: Vi vill ta in tweetet
-        // vad behöver vi?
-            // * själva tweeten. user. (eventually vill vi typ ha positiv eller negativ?? eller bild)
-
-
-
-        // steg 2: vi vill kolla hur långt det är
-=======
->>>>>>> ea05455d0ebc72554022a22499472379226eba3b
 
         for (TranslatedStatus translated : ts) {
             StringBuilder sb = parser(translated);
 
-<<<<<<< HEAD
-        // steg 3: tweeta
->>>>>>> 40ec95c0d0b1f5ab8f9df883ab8044d880f34ed7
-
-                while (!subTweetList.isEmpty()) {
-                    StatusUpdate statusUpdate = new StatusUpdate(Integer.toString(counter));
-                    statusUpdate.setInReplyToStatusId(inReplyToStatusId);
-
-                    Status updatedStatus = twitter.updateStatus(statusUpdate);
-                    inReplyToStatusId = updatedStatus.getId();
-                    counter++;
-=======
             if (!translated.getStatus().getUser().toString().equals("bandole19183971")) {
                 if (sb.length() < 280) {
                     twitter.updateStatus(sb.toString());
@@ -66,7 +32,6 @@ public class Tweeter {
                         Status updatedStatus = twitter.updateStatus(statusUpdate);
                         inReplyToStatusId = updatedStatus.getId();
                     }
->>>>>>> ea05455d0ebc72554022a22499472379226eba3b
                 }
             }
         }

@@ -38,11 +38,7 @@ public class Translator {
 
                         break;
                     default:
-<<<<<<< HEAD
-                        //
-=======
                         break;
->>>>>>> ea05455d0ebc72554022a22499472379226eba3b
                 }
             } catch (Exception e) {
                 throw new Exception(e);
