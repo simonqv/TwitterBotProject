@@ -24,10 +24,9 @@ public class Translator {
         for (var s : status) {
             try {
                 String lang = s.getLang();
-                int len = s.getText().length();
                 switch (lang) {
                     case "en":
-                        statusList.add(new TranslatedStatus(s, toPiglatin(s.getText())));
+                        //statusList.add(new TranslatedStatus(s, toPiglatin(s.getText())));
 
                         break;
                     case "sv":
@@ -39,12 +38,15 @@ public class Translator {
 
                         break;
                     default:
+<<<<<<< HEAD
                         //
+=======
+                        break;
+>>>>>>> ea05455d0ebc72554022a22499472379226eba3b
                 }
             } catch (Exception e) {
                 throw new Exception(e);
             }
-
         }
         return statusList;
     }
@@ -93,7 +95,7 @@ public class Translator {
                 // Split word into characters
                 List<String> charList = Arrays.asList(s.split("(?!^)"));
 
-                // Count how many capital letters in the beginning of the word
+                // Count how many consonants in the beginning of the word
                 int j = 0;
                 while (j < charList.size() &&
                         charList.get(j).matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM]")) {

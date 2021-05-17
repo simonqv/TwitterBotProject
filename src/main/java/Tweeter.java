@@ -7,17 +7,15 @@ import java.util.List;
  * This class is responsible of posting tweets on the twitter feed, using the translators translated tweets.
  */
 public class Tweeter {
+    private final List<TranslatedStatus> ts;
 
-    // private final List<Status> statusList;
-    private final Translator t;
-
-    public Tweeter(Translator t) {
-        //this.statusList = statusList;
-        this.t = t;
+    public Tweeter(List<TranslatedStatus> ts) {
+        this.ts = ts;
     }
 
-    public void postTweet(List<TranslatedStatus> ts) throws TwitterException {
+    public void postTweet() throws TwitterException {
         Twitter twitter = new TwitterFactory().getInstance();
+<<<<<<< HEAD
         StringBuilder sb = parser(ts);
 
 <<<<<<< HEAD
@@ -37,9 +35,13 @@ public class Tweeter {
 
 
         // steg 2: vi vill kolla hur långt det är
+=======
+>>>>>>> ea05455d0ebc72554022a22499472379226eba3b
 
-        // steg 2.5: dela upp om det är för lpngt
+        for (TranslatedStatus translated : ts) {
+            StringBuilder sb = parser(translated);
 
+<<<<<<< HEAD
         // steg 3: tweeta
 >>>>>>> 40ec95c0d0b1f5ab8f9df883ab8044d880f34ed7
 
@@ -50,34 +52,54 @@ public class Tweeter {
                     Status updatedStatus = twitter.updateStatus(statusUpdate);
                     inReplyToStatusId = updatedStatus.getId();
                     counter++;
+=======
+            if (!translated.getStatus().getUser().toString().equals("bandole19183971")) {
+                if (sb.length() < 280) {
+                    twitter.updateStatus(sb.toString());
+                } else {
+                    List<String> subTweetList = tweetSplitter(sb);
+                    long inReplyToStatusId = -1;
+
+                    for (String sub : subTweetList) {
+                        StatusUpdate statusUpdate = new StatusUpdate(sub);
+                        statusUpdate.setInReplyToStatusId(inReplyToStatusId);
+                        Status updatedStatus = twitter.updateStatus(statusUpdate);
+                        inReplyToStatusId = updatedStatus.getId();
+                    }
+>>>>>>> ea05455d0ebc72554022a22499472379226eba3b
                 }
             }
         }
     }
 
-    // Status first, Translated second
-    private StringBuilder parser(List<TranslatedStatus> ts) {
-        Status tweetInfo = ts.get(0).getStatus();
-        StringBuilder sb = new StringBuilder();
 
-        sb.append(tweetInfo.getUser().toString());
-        if (tweetInfo.getLang().equals("en")) {
-            sb.append(" Eetedtway: ");
+    // Status first, Translated second
+    private StringBuilder parser(TranslatedStatus translatedStatus) {
+        StringBuilder sb = new StringBuilder();
+        var tra = translatedStatus.getStatus().getUser().getName();
+        System.out.println(tra);
+        sb.append(translatedStatus.getStatus().getUser().getName());
+
+        if (translatedStatus.getStatus().getLang().equals("en")) {
+            sb.append(" eetedtway: ");
         } else {
             sb.append(" totwoweetotadode: ");
         }
-        return sb.append(ts.get(1).getTranslatedTweet());
+        sb.append(translatedStatus.getTranslatedTweet());
+        return sb;
     }
 
     private List<String> tweetSplitter(StringBuilder sb) {
+        // Start values
         int min = 0;
         int max = 280;
         List<String> subTweetList = new ArrayList<>();
         while (max < sb.length()) {
-            if (sb.length() - min - 1 < 280) {
-                subTweetList.add(sb.substring(min, sb.length() - 1));
+            if (sb.length() - min < 280) {
+                 subTweetList.add(sb.substring(min, sb.length() - 1));
             } else {
-                if (String.valueOf(sb.charAt(max)).equals(" ")) {
+
+                if (!String.valueOf(sb.charAt(max)).equals(" ")) {
                     max--;
                 } else {
                     subTweetList.add(sb.substring(min, max));
@@ -87,20 +109,5 @@ public class Tweeter {
             }
         }
         return subTweetList;
-    }
-
-    // Status first, Translated second
-    private StringBuilder parser(List<TranslatedStatus> ts) {
-        Status tweetInfo = ts.get(0).getStatus();
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(tweetInfo.getUser().toString());
-        if (tweetInfo.getLang().equals("en")) {
-            sb.append(" Eetedtway: ");
-        } else {
-            sb.append(" totwoweetotadode: ");
-        }
-
-        return sb.append(ts.get(1).getTranslatedTweet());
     }
 }
