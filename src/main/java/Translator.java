@@ -26,7 +26,7 @@ public class Translator {
                 String lang = s.getLang();
                 switch (lang) {
                     case "en":
-                        //statusList.add(new TranslatedStatus(s, toPiglatin(s.getText())));
+                        statusList.add(new TranslatedStatus(s, toPiglatin(s.getText())));
 
                         break;
                     case "sv":
@@ -59,15 +59,18 @@ public class Translator {
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM]$")) {
-                list.set(i, list.get(i) + "o" + list.get(i).toLowerCase());
+                if (list.get(i).matches("A-Z") && i == list.size()-1 &&
+                        list.get(i+1).matches("A-Z|")) { // could be a problem?
+                    list.set(i, list.get(i) + "O" + list.get(i));
+                } else {
+                    list.set(i, list.get(i) + "o" + list.get(i).toLowerCase());
+                }
             }
         }
         for (String string : list) {
             sb.append(string);
         }
-
         return sb.toString();
-
     }
 
     /**
@@ -102,33 +105,51 @@ public class Translator {
                 // (most likely a word with only capital letters)
                 if (charList.get(0).matches("[A-Z]") &&
                         charList.get(charList.size()-1).matches("[A-Z]")) {
-                    sb.append(charList.get(j).toUpperCase())
-                            .append(s.substring(j + 1))
-                            .append(s.substring(0, j))
-                            .append("AY");
+
+                    if (j == charList.size()) {
+                        sb.append(s.toUpperCase());
+                    } else {
+                        sb.append(s.substring(j).toUpperCase())
+                                .append(s.substring(0, j).toUpperCase());
+                    }
+                    sb.append("AY");
 
                 // Both the first and last character are not capital letters
                 // (most likely a word with no capital letters)
                 } else if (charList.get(0).matches("[a-z]") &&
                         charList.get(charList.size()-1).matches("[a-z]")){
-                    sb.append(s.substring(j))
-                            .append(s.substring(0, j))
-                            .append("ay");
+
+                    if (j == charList.size()) {
+                        sb.append(s.toLowerCase());
+                    } else {
+                        sb.append(s.substring(j).toLowerCase())
+                                .append(s.substring(0, j).toLowerCase());
+                    }
+                    sb.append("ay");
 
                 // The first character is a capital letter
                 // (Most likely a word that starts with a capital letter, all others are lower case)
                 } else if (charList.get(0).matches("[A-Z]") &&
                         charList.get(charList.size()-1).matches("[a-z]")){
-                    sb.append(charList.get(j).toUpperCase())
-                            .append(s.substring(j+1))
-                            .append(s.substring(0, j).toLowerCase())
-                            .append("ay");
+
+                    if (j == charList.size()) {
+                        sb.append(s);
+                    } else if (j == charList.size()-1) {
+                        sb.append(charList.get(j).toUpperCase())
+                                .append(s.substring(0,j).toLowerCase());
+                    } else {
+                        sb.append(charList.get(j).toUpperCase())
+                                .append(s.substring(j+1))
+                                .append(s.substring(0,j).toLowerCase());
+                    }
+                    sb.append("ay");
 
                     // The last character is a capital letter
                     // (Most likely a very strange word)
                 } else {
                     sb.append(s.substring(j).toLowerCase())
-                            .append(s.substring(0, j))
+                            .append(s.substring(0, j-1))
+                            .append(charList.get(j).toUpperCase())
                             .append("AY");
                 }
 

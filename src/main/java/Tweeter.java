@@ -37,39 +37,42 @@ public class Tweeter {
         }
     }
 
-
     // Status first, Translated second
     private StringBuilder parser(TranslatedStatus translatedStatus) {
         StringBuilder sb = new StringBuilder();
         var tra = translatedStatus.getStatus().getUser().getName();
         System.out.println(tra);
-        sb.append(translatedStatus.getStatus().getUser().getName());
+        sb.append("@/")
+                .append(translatedStatus.getStatus().getUser().getName());
 
         if (translatedStatus.getStatus().getLang().equals("en")) {
-            sb.append(" eetedtway: ");
+            sb.append(" eetedtway:");
         } else {
-            sb.append(" totwoweetotadode: ");
+            sb.append(" totwoweetotadode:");
         }
-        sb.append(translatedStatus.getTranslatedTweet());
+        sb.append("\n")
+                .append(translatedStatus.getTranslatedTweet());
         return sb;
     }
 
     private List<String> tweetSplitter(StringBuilder sb) {
         // Start values
         int min = 0;
-        int max = 280;
+        int max = 276; // make room for counter, eg. (1), (2), and so on
+        int counter = 1;
         List<String> subTweetList = new ArrayList<>();
         while (max < sb.length()) {
-            if (sb.length() - min < 280) {
-                 subTweetList.add(sb.substring(min, sb.length() - 1));
+            if (sb.length() - min < 276) {
+                 subTweetList.add("(" + counter + ") " + sb.substring(min, sb.length() - 1));
+                 counter++;
             } else {
-
                 if (!String.valueOf(sb.charAt(max)).equals(" ")) {
                     max--;
                 } else {
-                    subTweetList.add(sb.substring(min, max));
+                    subTweetList.add("(" + counter + ") " + sb.substring(min, max));
                     min = max;
-                    max += 280;
+                    max += 276;
+                    counter++;
                 }
             }
         }
