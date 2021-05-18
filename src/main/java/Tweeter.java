@@ -61,10 +61,13 @@ public class Tweeter {
         int max = 276; // make room for counter, eg. (1), (2), and so on
         int counter = 1;
         List<String> subTweetList = new ArrayList<>();
-        while (max < sb.length()) {
+
+        while (min < sb.length()) {
             if (sb.length() - min < 276) {
-                 subTweetList.add("(" + counter + ") " + sb.substring(min, sb.length() - 1));
-                 counter++;
+                subTweetList.add("(" + counter + ") " + sb.substring(min, sb.length() - 1));
+                min = max;
+                max += 276;
+                counter++;
             } else {
                 if (!String.valueOf(sb.charAt(max)).equals(" ")) {
                     max--;
