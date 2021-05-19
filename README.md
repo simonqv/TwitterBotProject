@@ -7,10 +7,12 @@ rövarspråket and piglatin, depending if the tweet was in Swedish or English.
 Chosen programming language: Java.
 
 ## Week 1
+
 Mostly spent on set up. Such as creating a Twitter profile and applying for access to Twitter's API. 
 We found the Twitter4j library to help us use the API. 
 Started a maven project where we put the Twitter4j dependencies. Started organizing the project a bit. 
----
+
+
 |Twitter account:  |                        |
 |------------------|------------------------|
 |**Usuername:**    |bandolero               |
