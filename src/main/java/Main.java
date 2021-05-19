@@ -1,5 +1,11 @@
 import twitter4j.Status;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -12,18 +18,27 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
-        try {
-            TweetReader tr = new TweetReader();
-            // twitter4j.conf.ConfigurationBuilder().TweetModeExtended(true);
-            List<Status> l = tr.getTimeLine();                  // get tweets
-            Translator translator = new Translator(l);
-            List<TranslatedStatus> ts = translator.translate(); // translate tweets
-            Tweeter t = new Tweeter(ts);
-            t.postTweet();                                    // Post tweet
 
-        } catch (Exception e) {
-            e.printStackTrace();
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 18; i++) {
+            try {
+                DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm");
+                LocalTime timeNow = LocalTime.now();
+                String formattedTime = timeNow.format(format);
+                if (formattedTime.equals("09:00") || formattedTime.equals("14:32")) {
+                    TweetReader tr = new TweetReader();
+                    List<Status> l = tr.getTimeLine();                  // get tweets
+                    Translator translator = new Translator(l);
+                    List<TranslatedStatus> ts = translator.translate(); // translate tweets
+                    Tweeter t = new Tweeter(ts);
+                    t.postTweet();                                    // Post tweet
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
     }
 }
