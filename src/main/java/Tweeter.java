@@ -19,14 +19,16 @@ public class Tweeter {
         for (TranslatedStatus translated : ts) {
             StringBuilder sb = parser(translated);
 
-            if (!translated.getStatus().getUser().toString().equals("bandole19183971")) {
+            if (!translated.getStatus().getUser().toString().equals("bandolero")) {
                 if (sb.length() < 280) {
                     twitter.updateStatus(sb.toString());
+                    // System.out.println(sb.toString());
                 } else {
                     List<String> subTweetList = tweetSplitter(sb);
                     long inReplyToStatusId = -1;
 
                     for (String sub : subTweetList) {
+                        // System.out.println(sub);
                         StatusUpdate statusUpdate = new StatusUpdate(sub);
                         statusUpdate.setInReplyToStatusId(inReplyToStatusId);
                         Status updatedStatus = twitter.updateStatus(statusUpdate);

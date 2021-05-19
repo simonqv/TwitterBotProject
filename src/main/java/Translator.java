@@ -26,15 +26,32 @@ public class Translator {
                 String lang = s.getLang();
                 switch (lang) {
                     case "en":
-                        statusList.add(new TranslatedStatus(s, toPiglatin(s.getText())));
+                        if (s.isRetweet()) {
+                            statusList.add(new TranslatedStatus(s, toPiglatin(s.getRetweetedStatus().getText())));
+                        } else {
+                            statusList.add(new TranslatedStatus(s, toPiglatin(s.getText())));
+                        }
 
                         break;
                     case "sv":
-                        statusList.add(new TranslatedStatus(s, toRovarspraket(s.getText())));
+                        if (s.isRetweet()) {
+                            statusList.add(new TranslatedStatus(s, toRovarspraket(s.getRetweetedStatus().getText())));
+                        } else {
+                            statusList.add(new TranslatedStatus(s, toRovarspraket(s.getText())));
+                        }
 
                         break;
                     case "da":
-                        statusList.add(new TranslatedStatus(s, toRovarspraket("Danska är ändå nästan svenska " + s.getText())));
+                        if (s.isRetweet()) {
+                            statusList.add(new TranslatedStatus(s,
+                                    toRovarspraket("(Danska är ändå nästan svenska) "
+                                            + s.getRetweetedStatus().getText())));
+
+                        } else {
+                            statusList.add(new TranslatedStatus(s,
+                                    toRovarspraket("(Danska är ändå nästan svenska) "
+                                            + s.getText())));
+                        }
 
                         break;
                     default:
@@ -49,18 +66,19 @@ public class Translator {
 
     /**
      * Method to translate into rövarspråket.
+     *
      * @param tweet the tweet to translate
      * @return translated string
      */
     public String toRovarspraket(String tweet) {
 
-        List<String> list = Arrays.asList(tweet.split("(?!^)"));
+        List<String> list = Arrays.asList(tweet.split(""));
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM]$")) {
-                if (list.get(i).matches("A-Z") && i == list.size()-1 &&
-                        list.get(i+1).matches("A-Z|")) { // could be a problem?
+                if (list.get(i).matches("A-Z") && i == list.size() - 1 &&
+                        list.get(i + 1).matches("A-Z|")) { // could be a problem?
                     list.set(i, list.get(i) + "O" + list.get(i));
                 } else {
                     list.set(i, list.get(i) + "o" + list.get(i).toLowerCase());
@@ -75,6 +93,7 @@ public class Translator {
 
     /**
      * Method to translate into pig latin.
+     *
      * @param tweet the tweet to translate
      * @return translated string
      */
@@ -104,7 +123,7 @@ public class Translator {
                 // Both the first and last character are capital letters
                 // (most likely a word with only capital letters)
                 if (charList.get(0).matches("[A-Z]") &&
-                        charList.get(charList.size()-1).matches("[A-Z]")) {
+                        charList.get(charList.size() - 1).matches("[A-Z]")) {
 
                     if (j == charList.size()) {
                         sb.append(s.toUpperCase());
@@ -114,10 +133,10 @@ public class Translator {
                     }
                     sb.append("AY");
 
-                // Both the first and last character are not capital letters
-                // (most likely a word with no capital letters)
+                    // Both the first and last character are not capital letters
+                    // (most likely a word with no capital letters)
                 } else if (charList.get(0).matches("[a-z]") &&
-                        charList.get(charList.size()-1).matches("[a-z]")){
+                        charList.get(charList.size() - 1).matches("[a-z]")) {
 
                     if (j == charList.size()) {
                         sb.append(s.toLowerCase());
@@ -127,20 +146,20 @@ public class Translator {
                     }
                     sb.append("ay");
 
-                // The first character is a capital letter
-                // (Most likely a word that starts with a capital letter, all others are lower case)
+                    // The first character is a capital letter
+                    // (Most likely a word that starts with a capital letter, all others are lower case)
                 } else if (charList.get(0).matches("[A-Z]") &&
-                        charList.get(charList.size()-1).matches("[a-z]")){
+                        charList.get(charList.size() - 1).matches("[a-z]")) {
 
                     if (j == charList.size()) {
                         sb.append(s);
-                    } else if (j == charList.size()-1) {
+                    } else if (j == charList.size() - 1) {
                         sb.append(charList.get(j).toUpperCase())
-                                .append(s.substring(0,j).toLowerCase());
+                                .append(s.substring(0, j).toLowerCase());
                     } else {
                         sb.append(charList.get(j).toUpperCase())
-                                .append(s.substring(j+1))
-                                .append(s.substring(0,j).toLowerCase());
+                                .append(s.substring(j + 1))
+                                .append(s.substring(0, j).toLowerCase());
                     }
                     sb.append("ay");
 
@@ -148,7 +167,7 @@ public class Translator {
                     // (Most likely a very strange word)
                 } else {
                     sb.append(s.substring(j).toLowerCase())
-                            .append(s.substring(0, j-1))
+                            .append(s.substring(0, j - 1))
                             .append(charList.get(j).toUpperCase())
                             .append("AY");
                 }
