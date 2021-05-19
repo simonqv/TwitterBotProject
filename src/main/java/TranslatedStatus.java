@@ -14,6 +14,7 @@ public class TranslatedStatus {
     }
 
     public String getTranslatedTweet() {
+
         return translatedTweet;
     }
 }

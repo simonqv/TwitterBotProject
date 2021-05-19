@@ -15,6 +15,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             TweetReader tr = new TweetReader();
+            // twitter4j.conf.ConfigurationBuilder().TweetModeExtended(true);
             List<Status> l = tr.getTimeLine();                  // get tweets
             Translator translator = new Translator(l);
             List<TranslatedStatus> ts = translator.translate(); // translate tweets
