@@ -18,15 +18,13 @@ import java.util.List;
 
 public class Main {
 
-
-
     public static void main(String[] args) {
         for (int i = 0; i < 18; i++) {
             try {
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm");
                 LocalTime timeNow = LocalTime.now();
                 String formattedTime = timeNow.format(format);
-                if (formattedTime.equals("09:00") || formattedTime.equals("14:32")) {
+                if (formattedTime.equals("09:00") || formattedTime.equals("15:00")) {
                     TweetReader tr = new TweetReader();
                     List<Status> l = tr.getTimeLine();                  // get tweets
                     Translator translator = new Translator(l);
