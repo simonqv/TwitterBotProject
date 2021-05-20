@@ -19,7 +19,7 @@ public class Tweeter {
         for (TranslatedStatus translated : ts) {
             StringBuilder sb = parser(translated);
 
-            if (!translated.getStatus().getUser().toString().equals("bandolero")) {
+            if (!translated.getStatus().getUser().getName().equals("bandolero")) {
                 if (sb.length() < 280) {
                     twitter.updateStatus(sb.toString());
                     // System.out.println(sb.toString());
