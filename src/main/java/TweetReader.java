@@ -1,9 +1,11 @@
 import twitter4j.*;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
-
-import java.util.List;
-import java.util.stream.Collectors;
+/**
+ * This class is responsible for reading the tweets on the timeline
+ *
+ * @author Sofia Eriksson
+ * @author Simon Larspers Qvist
+ * @version 2021-05-20
+ */
 
 public class TweetReader {
 
@@ -11,6 +13,11 @@ public class TweetReader {
         Twitter twitter = new TwitterFactory().getInstance();
     }
 
+    /**
+     * Read the tweets on the timeline
+     * @return a list of these tweets
+     * @throws TwitterException in case of any twitter error
+     */
     public ResponseList<Status> getTimeLine() throws TwitterException {
         Twitter twitter = new TwitterFactory().getInstance();
 
