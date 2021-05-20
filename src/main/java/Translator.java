@@ -3,14 +3,14 @@ import twitter4j.Status;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Translator class.
+ * Takes the tweets and translates.
  *
  * @author Sofia Eriksson
  * @author Simon Larspers Qvist
- * @version 2021-05-11
+ * @version 2021-05-20
  */
 public class Translator {
     private final List<Status> status;
@@ -19,11 +19,18 @@ public class Translator {
         this.status = status;
     }
 
+    /**
+     * Translate the statuses from the timeline
+     * @return a list containing translated tweet from the timeline, with corresponding info (see TranslatedStatus.java)
+     * @throws Exception if status is empty or un-readable or such (there is no status)
+     */
     public List<TranslatedStatus> translate() throws Exception {
         List<TranslatedStatus> statusList = new ArrayList<>();
         for (var s : status) {
             try {
                 String lang = s.getLang();
+
+                // Choose translation depending on language data in status
                 switch (lang) {
                     case "en":
                         if (s.isRetweet()) {
@@ -31,7 +38,6 @@ public class Translator {
                         } else {
                             statusList.add(new TranslatedStatus(s, toPiglatin(s.getText())));
                         }
-
                         break;
                     case "sv":
                         if (s.isRetweet()) {
@@ -39,7 +45,6 @@ public class Translator {
                         } else {
                             statusList.add(new TranslatedStatus(s, toRovarspraket(s.getText())));
                         }
-
                         break;
                     case "da":
                         if (s.isRetweet()) {
@@ -52,7 +57,6 @@ public class Translator {
                                     toRovarspraket("(Danska är ändå nästan svenska) "
                                             + s.getText())));
                         }
-
                         break;
                     default:
                         break;
@@ -65,21 +69,23 @@ public class Translator {
     }
 
     /**
-     * Method to translate into rövarspråket.
+     * Method to translate into rövarspråket
      *
      * @param tweet the tweet to translate
      * @return translated string
      */
     public String toRovarspraket(String tweet) {
-
         List<String> list = Arrays.asList(tweet.split(""));
         StringBuilder sb = new StringBuilder();
 
+        // For every character, change consonants to consonat + o + consonant. (case sensitive)
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).matches("^[qwrtpsdfghjklzxcvbnmQWRTPSDFGHJKLZXCVBNM]$")) {
-                if (list.get(i).matches("A-Z") && i == list.size() - 1 &&
-                        list.get(i + 1).matches("A-Z|")) { // could be a problem?
+                // If current and next are capital letters we want to add uppercase O and uppercase consonant
+                if (list.get(i).matches("[A-ZÅÄÖ]") && i != list.size() - 1 &&
+                        !list.get(i + 1).matches("[a-zåäö]")) {
                     list.set(i, list.get(i) + "O" + list.get(i));
+                // Else add lowercase o and lowercase consonant
                 } else {
                     list.set(i, list.get(i) + "o" + list.get(i).toLowerCase());
                 }
@@ -164,12 +170,15 @@ public class Translator {
                     sb.append("ay");
 
                     // The last character is a capital letter
-                    // (Most likely a very strange word)
+                    // (Most likely a very strange word, but whatever)
                 } else {
-                    sb.append(s.substring(j).toLowerCase())
-                            .append(s.substring(0, j - 1))
-                            .append(charList.get(j).toUpperCase())
-                            .append("AY");
+                    if (j == charList.size()) {
+                        sb.append(s.toLowerCase());
+                    } else {
+                        sb.append(s.substring(j).toLowerCase())
+                                .append(s.substring(0, j).toLowerCase());
+                    }
+                    sb.append("aY");
                 }
 
                 // Word is actually whitespace or punctuation
