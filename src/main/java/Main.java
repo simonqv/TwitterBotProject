@@ -19,7 +19,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < 14; i++) {
             try {
                 DateTimeFormatter format = DateTimeFormatter.ofPattern("HH:mm");
                 LocalTime timeNow = LocalTime.now();
@@ -31,7 +31,9 @@ public class Main {
                     List<TranslatedStatus> ts = translator.translate(); // translate tweets
                     Tweeter t = new Tweeter(ts);
                     t.postTweet();                                    // Post tweet
-
+                    Thread.sleep(60000);
+                } else {
+                    i--;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
